@@ -248,133 +248,149 @@ Because of their speed and low overhead, threads are used in virtually all moder
 
 ## Practical Examples & Code
 
-### 1. Creating Processes (Python)
+### 1. Creating Processes (Java)
 
-```python
-import os
-import multiprocessing
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
-def worker(name):
-    """Function to be executed in a separate process"""
-    print(f"Process {name} (PID: {os.getpid()}) is running")
-    for i in range(3):
-        print(f"{name}: {i}")
-
-if __name__ == "__main__":
-    print(f"Main Process PID: {os.getpid()}")
+public class ProcessExample {
     
-    # Create multiple processes
-    processes = []
-    for i in range(3):
-        p = multiprocessing.Process(target=worker, args=(f"P{i}",))
-        p.start()
-        processes.append(p)
-    
-    # Wait for all processes to complete
-    for p in processes:
-        p.join()
-    
-    print("All processes completed")
-```
-
-**Output Example**:
-```
-Main Process PID: 1234
-Process P0 (PID: 1235) is running
-Process P1 (PID: 1236) is running
-Process P2 (PID: 1237) is running
-...
-All processes completed
-```
-
-### 2. Creating Threads (Python)
-
-```python
-import threading
-import time
-
-def worker(name, duration):
-    """Function to be executed in a separate thread"""
-    print(f"Thread {name} (ID: {threading.current_thread().ident}) started")
-    for i in range(3):
-        print(f"{name}: {i}")
-        time.sleep(0.5)
-    print(f"Thread {name} completed")
-
-if __name__ == "__main__":
-    print(f"Main Thread ID: {threading.current_thread().ident}")
-    
-    # Create multiple threads
-    threads = []
-    for i in range(3):
-        t = threading.Thread(target=worker, args=(f"T{i}", 1))
-        t.start()
-        threads.append(t)
-    
-    # Wait for all threads to complete
-    for t in threads:
-        t.join()
-    
-    print("All threads completed")
-```
-
-**Output Example**:
-```
-Main Thread ID: 140234567890
-Thread T0 (ID: 140234567891) started
-Thread T1 (ID: 140234567892) started
-Thread T2 (ID: 140234567893) started
-T0: 0
-T1: 0
-T2: 0
-...
-All threads completed
-```
-
-### 3. Process vs. Thread Performance (C)
-
-```c
-#include <stdio.h>
-#include <stdlib.h>
-#include <pthread.h>
-#include <time.h>
-#include <unistd.h>
-
-#define NUM_THREADS 4
-#define NUM_ITERATIONS 1000000
-
-void* thread_function(void* arg) {
-    long count = 0;
-    for (long i = 0; i < NUM_ITERATIONS; i++) {
-        count++;
+    public static void main(String[] args) throws Exception {
+        System.out.println("Main Process ID: " + ProcessHandle.current().pid());
+        
+        // Create multiple processes
+        Process[] processes = new Process[3];
+        
+        for (int i = 0; i < 3; i++) {
+            // Launch a new Java process (can be any command)
+            ProcessBuilder pb = new ProcessBuilder("java", "-version");
+            processes[i] = pb.start();
+            
+            System.out.println("Process " + i + " (PID: " + processes[i].pid() + ") started");
+        }
+        
+        // Wait for all processes to complete
+        for (int i = 0; i < 3; i++) {
+            int exitCode = processes[i].waitFor();
+            System.out.println("Process " + i + " completed with exit code: " + exitCode);
+        }
+        
+        System.out.println("All processes completed");
     }
-    printf("Thread completed: %ld\n", count);
-    return NULL;
 }
 
-int main() {
-    pthread_t threads[NUM_THREADS];
-    clock_t start, end;
-    
-    // Create threads
-    start = clock();
-    for (int i = 0; i < NUM_THREADS; i++) {
-        pthread_create(&threads[i], NULL, thread_function, NULL);
-    }
-    
-    // Wait for threads
-    for (int i = 0; i < NUM_THREADS; i++) {
-        pthread_join(threads[i], NULL);
-    }
-    end = clock();
-    
-    printf("Time taken (threads): %f seconds\n", 
-           (double)(end - start) / CLOCKS_PER_SEC);
-    
-    return 0;
-}
-```
+### 2. Creating Threads (Java)
 
+public class ThreadExample {
+    
+    static class Worker extends Thread {
+        private String name;
+        
+        public Worker(String name) {
+            this.name = name;
+        }
+        
+        @Override
+        public void run() {
+            System.out.println("Thread " + name + " (ID: " + 
+                             Thread.currentThread().getId() + ") started");
+            
+            for (int i = 0; i < 3; i++) {
+                System.out.println(name + ": " + i);
+                try {
+                    Thread.sleep(500); // Sleep for 500ms
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            
+            System.out.println("Thread " + name + " completed");
+        }
+    }
+    
+    public static void main(String[] args) {
+        System.out.println("Main Thread ID: " + Thread.currentThread().getId());
+        
+        // Create multiple threads
+        Thread[] threads = new Thread[3];
+        for (int i = 0; i < 3; i++) {
+            threads[i] = new Worker("T" + i);
+            threads[i].start();
+        }
+        
+        // Wait for all threads to complete
+        for (int i = 0; i < 3; i++) {
+            try {
+                threads[i].join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        System.out.println("All threads completed");
+    }
+}
+
+### 3. Process vs. Thread Performance (Java)
+
+public class ThreadPerformanceComparison {
+    
+    private static final int NUM_THREADS = 4;
+    private static final long NUM_ITERATIONS = 1_000_000_000L;
+    
+    static class Worker extends Thread {
+        public long count = 0;
+        
+        @Override
+        public void run() {
+            for (long i = 0; i < NUM_ITERATIONS; i++) {
+                count++;
+            }
+        }
+    }
+    
+    public static void main(String[] args) throws InterruptedException {
+        System.out.println("Thread Performance Comparison");
+        System.out.println("Threads: " + NUM_THREADS);
+        System.out.println("Iterations per thread: " + NUM_ITERATIONS);
+        System.out.println();
+        
+        // Measure thread execution time
+        Worker[] threads = new Worker[NUM_THREADS];
+        long startTime = System.nanoTime();
+        
+        // Create and start threads
+        for (int i = 0; i < NUM_THREADS; i++) {
+            threads[i] = new Worker();
+            threads[i].start();
+        }
+        
+        // Wait for all threads to complete
+        for (int i = 0; i < NUM_THREADS; i++) {
+            threads[i].join();
+        }
+        
+        long endTime = System.nanoTime();
+        double timeInSeconds = (endTime - startTime) / 1_000_000_000.0;
+        
+        System.out.println("Time taken (threads): " + String.format("%.4f", timeInSeconds) + " seconds");
+        System.out.println();
+        
+        // Measure sequential execution time for comparison
+        long startTime2 = System.nanoTime();
+        long totalCount = 0;
+        for (int i = 0; i < NUM_THREADS; i++) {
+            for (long j = 0; j < NUM_ITERATIONS; j++) {
+                totalCount++;
+            }
+        }
+        long endTime2 = System.nanoTime();
+        double timeInSeconds2 = (endTime2 - startTime2) / 1_000_000_000.0;
+        
+        System.out.println("Time taken (sequential): " + String.format("%.4f", timeInSeconds2) + " seconds");
+        System.out.println("Speedup with threads: " + String.format("%.2f", timeInSeconds2 / timeInSeconds) + "x");
+    }
+}
 ---
 
 ## Understanding Key Concepts
