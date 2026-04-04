@@ -1,1 +1,74 @@
+Process, Program, and Thread
+In the world of operating systems, understanding the distinction between processes, programs, and threads is essential. These are the key components involved in the execution of tasks by a computer system. Each plays a unique role in resource management, task handling, and overall system performance.
 
+Process
+A process is a program that is currently being executed by the operating system. It is not just the code, but also includes the program’s current activity, state, memory layout, allocated resources, and data needed during execution.
+
+When a program is launched (for example, by clicking on a game or a browser), the operating system loads the necessary code into memory, creates a process, assigns it resources, and begins executing its instructions. The process is monitored and controlled by the OS throughout its lifecycle.
+
+A process typically consists of:
+Code: The actual program instructions that need to be executed.
+Execution Context: All the information the OS needs to manage the process such as the process ID, state (running, waiting, etc.), CPU registers, and memory layout.
+Runtime Data: Variables, function call stacks, and temporary data used during execution.
+Example: A music player running on your computer is one process. A web browser open at the same time is another. Although both come from different programs, each is a separate process. The OS ensures they are isolated and can run simultaneously without conflict.
+
+Types of Processes
+Processes can be classified based on their origin and interaction style:
+
+System Processes: These are core processes that are created and managed by the operating system itself. They are responsible for system-level tasks like memory management, device drivers, and background services.
+User Processes: These are processes started by the user. For instance, when you open a text editor, it becomes a user process.
+Foreground Processes: These are visible processes that require and involve user interaction. The programs you actively work with (e.g., a word processor) are foreground processes.
+Background Processes: These run without direct user interaction. Examples include file synchronization tools or system update services running silently in the background.
+Process Lifecycle Example: When you click on a game icon, the OS loads the program into memory and starts executing it as a process. When you exit the game, the OS terminates the process and reclaims all its resources.
+
+Program
+A program is a static set of instructions written in a programming language, stored on a disk or other storage medium. It is a passive entity that only defines what the computer is supposed to do. It becomes an active process only when the OS loads and executes it.
+
+Analogy: A program is like a recipe written in a cookbook. It contains instructions for preparing a dish (task), but nothing happens until someone reads it and follows the steps (i.e., the OS executes it).
+
+Key Features of a Program:
+Static Code: Programs are stored as files—often in binary form—after compilation. They do not perform any function until executed. Examples: .exe, .out.
+File Format: Depending on the OS, programs use different executable formats:
+ELF (Executable and Linkable Format): used in Linux.
+PE (Portable Executable): used in Windows.
+Dependency on OS: A program cannot run by itself. It depends on the operating system to allocate memory, schedule CPU time, and handle hardware interactions.
+Process vs Program
+Although often used interchangeably, a program and a process are quite different in the context of an operating system.
+
+A program is merely the code, like a text document sitting on disk. A process is the active execution of that code, along with all the memory, CPU, and resources needed to carry it out.
+
+Example:
+Suppose you open three tabs in a web browser like Chrome. The browser program is stored once on disk, but each tab runs as a separate process to ensure that if one crashes, the others can still function. All processes share the same program code, but they have separate memory spaces and execution states.
+
+Memory Structure:
+Shared: The code (also called the "text" section) is common across all processes originating from the same program.
+Unique: Each process has its own stack (for function calls), heap (for dynamic memory), and data segment.
+Comparison Table:
+Aspect	Process	Program
+Definition	A program in execution (active)	A static set of instructions (passive)
+Storage	Resides in memory (RAM)	Stored on disk or file system
+State	Has a current execution state	No state, it is not running
+Multiplicity	Each process is a separate execution of the program	Same program can be the source of multiple processes
+Thread
+A thread is the smallest unit of execution within a process. If a process is a large task, then threads are the smaller subtasks within it. A process can have one or multiple threads. Each thread represents a single sequence of instructions executed independently.
+
+All threads in a process share the same memory space (including code, data, and heap) but have their own program counter, stack, and register set. Because they share resources, threads are more lightweight than processes, making them faster to create and manage.
+
+Example: In a web browser:
+
+One thread may handle loading a webpage.
+Another thread may play a video.
+A third thread may respond to user actions like scrolling or clicking.
+All of these run concurrently under the same process.
+Need / Use of Threads
+Threads are used to improve the performance, responsiveness, and efficiency of applications. They are an essential part of modern OS and software design for the following reasons:
+
+Parallel Execution: Threads allow multiple parts of a program to run at the same time. On multi-core processors, different threads can execute truly in parallel, speeding up performance.
+Responsiveness: In graphical applications, threads ensure smooth user experiences. For instance, one thread can handle user inputs, while others perform background operations like file loading or computations.
+Efficient Resource Use: Creating a thread is faster and consumes fewer system resources compared to creating a new process. Threads within the same process share data easily and communicate without needing inter-process communication mechanisms.
+Because of their speed and low overhead, threads are used in virtually all modern software, from mobile apps to web servers and real-time control systems.
+
+Conclusion
+In an operating system, a program defines what needs to be done, a process is the actual execution of that program, and a thread is a sub-unit of a process that can execute independently.
+
+Processes provide resource isolation, while threads enable lightweight, efficient parallelism within a process. A solid grasp of these concepts is fundamental to understanding multitasking, concurrency, resource management, and the internal behavior of modern operating systems.
