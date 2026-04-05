@@ -1,1 +1,52 @@
+Kernel Mode and User Mode
+Modern operating systems implement a dual-mode operation: Kernel Mode and User Mode.
 
+This design ensures security, stability, and efficient resource utilization by separating user applications from the critical operations of the operating system. Let's dive deeper into these two modes and understand their significance.
+Real-Life Analogy:
+Imagine a bank with two areas:
+Public Area (User Mode): Customers can access services like depositing or withdrawing money but cannot modify internal operations like accounting or security systems.
+Restricted Area (Kernel Mode): Only authorized employees (the OS kernel) can access the restricted area to perform critical operations.
+
+User Mode
+In User Mode, the CPU runs applications or processes initiated by the user. These processes have limited permissions and cannot access critical system resources directly. Instead, they rely on system calls to request services from the kernel. Key Features:
+Applications operate in an isolated environment to prevent accidental or malicious interference with the operating system.
+Direct access to hardware and sensitive data is restricted.
+Errors in user-mode programs do not crash the system as they are isolated from critical resources.
+Kernel Mode
+Kernel Mode(also called supervisor mode, system mode, or privileged mode) is where the operating system core operates. It has unrestricted access to all system resources, including hardware (e.g., CPU, memory, and I/O devices). This mode is reserved for executing critical tasks such as process scheduling, memory management, and hardware communication. Key Features:
+Full access to system resources, including privileged CPU instructions and hardware.
+Used to execute core system functions like drivers, interrupt handling, and system calls.
+Errors in kernel mode can crash the entire system due to its unrestricted access.
+
+Events resulting in Mode Change:
+Mode changes, known as context switches, occur during specific events:
+System Calls: When a user-mode application requests kernel services (e.g., file operations or network access).
+Interrupts: Hardware interrupts or exceptions trigger a mode change to handle events like I/O completion or errors.
+Faults: Errors such as page faults cause a transition to kernel mode to resolve the issue.
+Events During Mode Change:
+During a mode change:
+The CPU switches from user mode to kernel mode by changing the mode bit in the processor's control register.
+The current process's context (register values, program counter) is saved.
+The kernel executes the requested service or handles the interrupt.
+Once the task is complete, the CPU switches back to user mode and restores the saved context.
+
+Advanced Concepts: Dual-Mode Operations
+In order to ensure proper execution of the OS, the approach taken by most computer systems is to provide hardware support that allows us to differentiate among various modes of execution.
+Mode Bit:
+A bit, called the mode bit, is added to the hardware of the computer to indicate the current mode: kernel (0) or user (1). The mode bit distinguishes tasks executed on behalf of the operating system from those executed for user applications. When executing a user application, the system operates in user mode. However, when a user application requests an operating system service (e.g., accessing file from the disk) through a system call, the system transitions to kernel mode to fulfill the request.
+At system boot time, the hardware starts in kernel mode. The operating system is then loaded and starts user applications in user mode. Whenever a trap or interrupt occurs, the hardware switches from user mode to kernel mode (that is, changes the state of the mode bit to 0). Thus, whenever the operating system gains control of the computer, it is in kernel mode. The system always switches to user mode (by setting the mode bit to 1) before passing control to a user program.
+
+During the life cycle of instruction execution in a computer system, initial control resides in the operating system, where instructions are executed in kernel mode. When control is given to a user application, the mode is set to user mode. Eventually, control is switched back to the operating system via an interrupt, a trap, or a system call.
+
+Difference Between Kernel Mode and User Mode
+Purpose: User mode runs user applications whereas kernel mode executes critical system operations.
+Access: Kernel mode has full access to system resources whereas user mode has limited access.
+Fault Tolerance: Errors in user mode are isolated, whereas errors in kernel mode can bring down the system.
+Security: User mode protects the OS by restricting direct hardware interaction.
+Differences in Permissions Between User and Kernel Mode
+The primary distinction lies in the level of access and permissions:
+Aspect	User Mode	Kernel Mode
+Access Level	Restricted	Full
+Direct Hardware Access	No	Yes
+Privileged Instructions	Not Allowed	Allowed
+Error Impact	Application Crash	System Crash
