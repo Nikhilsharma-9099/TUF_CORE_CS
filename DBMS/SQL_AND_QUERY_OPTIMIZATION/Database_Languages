@@ -1,1 +1,94 @@
+Database Languages are specialized languages used to create, manage, modify, and control databases. These languages are integral to managing data within relational database management systems (RDBMS) and help perform operations like defining structures, inserting and updating records, managing user permissions, and controlling transactions.
 
+The major types of database languages are:
+
+Data Definition Language (DDL)
+Data Manipulation Language (DML)
+Data Control Language (DCL)
+Transaction Control Language (TCL)
+Structured Query Language (SQL)
+
+1. Data Definition Language (DDL)
+Data Definition Language (DDL) is used to define, alter, and delete the structure of database objects such as tables, indexes, views, and schemas. DDL commands affect the structure of the database schema and are typically executed once during database creation or modification.
+
+Common DDL Commands
+CREATE: Creates a new database object, such as a table, view, or index.
+ALTER: Modifies an existing database object’s structure.
+DROP: Deletes a database object.
+TRUNCATE: Removes all records from a table but retains the table structure.
+RENAME: Renames an existing object in the database.
+Examples
+CREATE TABLE Employee (
+    Employee_ID INT PRIMARY KEY,
+    Name VARCHAR(50),
+    Department VARCHAR(30)
+);
+
+ALTER TABLE Employee ADD Salary DECIMAL(10, 2);
+
+DROP TABLE Employee;
+
+2. Data Manipulation Language (DML)
+Data Manipulation Language (DML) is used to manipulate data within existing database structures. DML commands allow users to perform CRUD (Create, Read, Update, Delete) operations on records, interacting with data without modifying the structure.
+
+Common DML Commands
+INSERT: Adds new records to a table.
+SELECT: Retrieves data from one or more tables.
+UPDATE: Modifies existing records in a table.
+DELETE: Removes records from a table.
+Examples
+INSERT INTO Employee (Employee_ID, Name, Department, Salary)
+VALUES (101, 'Alice', 'HR', 60000);
+
+SELECT * FROM Employee WHERE Department = 'HR';
+
+UPDATE Employee SET Salary = 65000 WHERE Employee_ID = 101;
+
+DELETE FROM Employee WHERE Employee_ID = 101;
+
+3. Data Control Language (DCL)
+Data Control Language (DCL) is used to control access to data within the database. DCL commands manage permissions, ensuring that only authorized users can access or manipulate specific parts of the database.
+
+Common DCL Commands
+GRANT: Provides a specific user with access rights or privileges to database objects.
+REVOKE: Removes previously granted access rights from a user.
+Examples
+GRANT SELECT, INSERT ON Employee TO user1;
+
+REVOKE INSERT ON Employee FROM user1;
+
+4. Transaction Control Language (TCL)
+Transaction Control Language (TCL) commands manage transactions within a database, allowing for the grouping of multiple operations into a single transaction. TCL commands ensure data integrity, especially in multi-step processes, by either committing or rolling back changes based on success or failure.
+
+Common TCL Commands
+COMMIT: Saves all changes made during the transaction permanently.
+ROLLBACK: Reverts changes made during the transaction.
+SAVEPOINT: Sets a specific point within a transaction to which a rollback can occur.
+SET TRANSACTION: Sets transaction properties such as isolation level.
+Examples
+BEGIN TRANSACTION;
+
+UPDATE Employee SET Salary = 70000 WHERE Employee_ID = 101;
+COMMIT;
+
+UPDATE Employee SET Salary = 65000 WHERE Employee_ID = 102;
+ROLLBACK;
+
+SAVEPOINT sp1;
+
+5. Structured Query Language (SQL)
+Structured Query Language (SQL) is the standard language for interacting with relational databases. SQL is a comprehensive language that combines DDL, DML, DCL, and TCL commands, allowing users to define structures, manipulate data, control access, and manage transactions.
+
+SQL Example
+CREATE TABLE Product (
+    Product_ID INT PRIMARY KEY,
+    Product_Name VARCHAR(50),
+    Price DECIMAL(10, 2)
+);
+
+INSERT INTO Product (Product_ID, Product_Name, Price)
+VALUES (1, 'Laptop', 1200.00);
+
+SELECT Product_Name, Price FROM Product WHERE Product_ID = 1;
+
+COMMIT;
