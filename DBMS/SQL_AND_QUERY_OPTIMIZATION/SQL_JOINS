@@ -1,0 +1,94 @@
+In SQL, JOINS are used to retrieve data from two or more tables based on a related column. By linking tables together, joins allow users to combine records and get a unified view of data that might be stored across multiple tables.
+
+Types of JOINS in SQL
+INNER JOIN – Returns records with matching values in both tables.
+LEFT JOIN – Returns all records from the left table and matching records from the right table; unmatched rows are shown as NULL.
+RIGHT JOIN – Returns all records from the right table and matching records from the left table; unmatched rows are shown as NULL.
+FULL OUTER JOIN – Returns all records when there is a match in either the left or right table, with unmatched rows filled with NULL.
+
+Example Tables
+To illustrate joins, let’s consider two tables:
+
+Employee Table
+Employee_ID	Name	Department_ID
+1	Alice	101
+2	Bob	102
+3	Charlie	NULL
+4	Dave	103
+Department Table
+Department_ID	Department_Name
+101	HR
+102	IT
+104	Finance
+1. INNER JOIN
+An INNER JOIN returns only the rows where there is a match between both tables. If there’s no match, the row will not be included in the result.
+
+Syntax:
+SELECT columns
+FROM table1
+INNER JOIN table2 ON table1.column = table2.column;
+Example
+SELECT Employee.Name, Department.Department_Name
+FROM Employee
+INNER JOIN Department ON Employee.Department_ID = Department.Department_ID;
+Result:
+Name	Department_Name
+Alice	HR
+Bob	IT
+2. LEFT JOIN
+A LEFT JOIN returns all records from the left table (Employee), and the matched records from the right table (Department). If there’s no match, NULL values are shown for columns from the right table.
+
+Syntax:
+SELECT columns
+FROM table1
+LEFT JOIN table2 ON table1.column = table2.column;
+Example
+SELECT Employee.Name, Department.Department_Name
+FROM Employee
+LEFT JOIN Department ON Employee.Department_ID = Department.Department_ID;
+Result:
+Name	Department_Name
+Alice	HR
+Bob	IT
+Charlie	NULL
+Dave	NULL
+3. RIGHT JOIN
+A RIGHT JOIN returns all records from the right table (Department), and the matched records from the left table (Employee). If there’s no match, NULL values are shown for columns from the left table.
+
+Syntax:
+SELECT columns
+FROM table1
+RIGHT JOIN table2 ON table1.column = table2.column;
+Example
+SELECT Employee.Name, Department.Department_Name
+FROM Employee
+RIGHT JOIN Department ON Employee.Department_ID = Department.Department_ID;
+Result:
+Name	Department_Name
+Alice	HR
+Bob	IT
+NULL	Finance
+4. FULL OUTER JOIN
+A FULL OUTER JOIN returns all records when there is a match in either the left or right table. Unmatched rows will have NULL values in columns where there’s no match.
+
+Syntax:
+SELECT columns
+FROM table1
+FULL OUTER JOIN table2 ON table1.column = table2.column;
+Example
+SELECT Employee.Name, Department.Department_Name
+FROM Employee
+FULL OUTER JOIN Department ON Employee.Department_ID = Department.Department_ID;
+Result:
+Name	Department_Name
+Alice	HR
+Bob	IT
+Charlie	NULL
+Dave	NULL
+NULL	Finance
+Summary Table of JOIN Types
+JOIN Type	Description	Example Outcome
+INNER JOIN	Returns only rows with matches in both tables.	Alice (HR), Bob (IT)
+LEFT JOIN	Returns all rows from the left table and matched rows from the right; unmatched rows in the right table are NULL.	Alice (HR), Bob (IT), Charlie (NULL), Dave (NULL)
+RIGHT JOIN	Returns all rows from the right table and matched rows from the left; unmatched rows in the left table are NULL.	Alice (HR), Bob (IT), NULL (Finance)
+FULL OUTER JOIN	Returns all rows with matches in either table; unmatched rows show NULLs.	Alice (HR), Bob (IT), Charlie (NULL), Dave (NULL), NULL (Finance)
