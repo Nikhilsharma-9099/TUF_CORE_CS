@@ -1,0 +1,110 @@
+Aggregate Functions in SQL are used to perform calculations on multiple rows of a table and return a single value as a result. They’re essential for creating reports, summaries, and statistical analysis of data. Aggregate functions operate on sets of values and are frequently used with the GROUP BY clause to calculate grouped data.
+
+Common Aggregate Functions in SQL
+COUNT() – Counts the number of rows.
+SUM() – Calculates the total sum of a column.
+AVG() – Computes the average of a column.
+MIN() – Finds the minimum value in a column.
+MAX() – Finds the maximum value in a column.
+GROUP_CONCAT() – Concatenates values from multiple rows into a single string.
+
+1. COUNT() Function
+The COUNT() function returns the total number of rows in a table or the number of non-null values in a specified column. It’s particularly useful for counting records based on specific conditions.
+
+Syntax:
+SELECT COUNT(column_name) FROM table_name;
+Example
+SELECT COUNT(Customer_ID) AS Total_Customers
+FROM Customer;
+Result:
+Total_Customers
+4
+This example counts the total number of unique customers in the Customer table.
+
+2. SUM() Function
+The SUM() function calculates the total sum of values in a numeric column. It’s commonly used to determine total sales, total revenue, or any other cumulative value.
+
+Syntax:
+SELECT SUM(column_name) FROM table_name;
+Example
+SELECT SUM(Salary) AS Total_Salary
+FROM Employee;
+Result:
+Total_Salary
+250000
+This query calculates the total salary paid to all employees in the Employee table.
+
+3. AVG() Function
+The AVG() function calculates the average value of a numeric column. It’s often used to find the average sales amount, average score, or average salary.
+
+Syntax:
+SELECT AVG(column_name) FROM table_name;
+Example
+SELECT AVG(Salary) AS Average_Salary
+FROM Employee;
+Result:
+Average_Salary
+62500
+This query calculates the average salary of employees in the Employee table.
+
+4. MIN() Function
+The MIN() function returns the smallest value in a specified column. It’s useful for finding the minimum value in a set, such as the lowest price or the earliest date.
+
+Syntax:
+SELECT MIN(column_name) FROM table_name;
+Example
+SELECT MIN(Salary) AS Min_Salary
+FROM Employee;
+Result:
+Min_Salary
+50000
+This query retrieves the minimum salary from the Employee table.
+
+5. MAX() Function
+The MAX() function returns the largest value in a specified column. It’s useful for finding the highest price, the most recent date, or the maximum value of any attribute.
+
+Syntax:
+SELECT MAX(column_name) FROM table_name;
+Example
+SELECT MAX(Salary) AS Max_Salary
+FROM Employee;
+Result:
+Max_Salary
+90000
+This query retrieves the maximum salary from the Employee table.
+
+6. GROUP_CONCAT() Function
+The GROUP_CONCAT() function concatenates values from multiple rows into a single string, with each value separated by a specified delimiter. It’s useful for listing values in a single row, such as combining all products sold by a salesperson.
+
+Syntax:
+SELECT GROUP_CONCAT(column_name SEPARATOR 'delimiter') FROM table_name;
+Example
+SELECT GROUP_CONCAT(Product_Name SEPARATOR ', ') AS Product_List
+FROM Product;
+Result:
+Product_List
+Laptop, Chair, Desk
+This query concatenates the product names from the Product table into a single string.
+
+Using Aggregate Functions with GROUP BY
+Aggregate functions are often used with the GROUP BY clause to perform calculations on grouped data. For example, you might want to calculate the total sales by each salesperson or the average score by each department.
+
+Example
+SELECT Department, AVG(Salary) AS Avg_Department_Salary
+FROM Employee
+GROUP BY Department;
+Result:
+Department	Avg_Department_Salary
+HR	60000
+IT	80000
+Finance	55000
+This query calculates the average salary per department by grouping employees based on their department.
+
+Summary Table of Aggregate Functions
+Aggregate Function	Description	Example	Result
+COUNT()	Counts the number of rows or non-null values.	COUNT(Customer_ID)	Counts customers
+SUM()	Calculates the total sum of values in a column.	SUM(Salary)	Calculates total salary
+AVG()	Computes the average value of a column.	AVG(Salary)	Calculates average salary
+MIN()	Finds the smallest value in a column.	MIN(Salary)	Finds minimum salary
+MAX()	Finds the largest value in a column.	MAX(Salary)	Finds maximum salary
+GROUP_CONCAT()	Concatenates values from multiple rows.	GROUP_CONCAT(Product_Name SEPARATOR ', ')
