@@ -1,0 +1,197 @@
+SQL Operators
+SQL operators are divided into several categories, each serving a unique function to manipulate or filter data in SQL statements:
+
+Arithmetic Operators
+Comparison Operators
+Logical Operators
+Bitwise Operators
+Set Operators
+
+1. Arithmetic Operators
+Arithmetic Operators perform mathematical operations on numeric data. These operators include addition, subtraction, multiplication, division, and modulo.
+
+Example SQL Code
+SELECT
+    Employee_ID,
+    Salary,
+    Salary + 500 AS Salary_Bonus,
+    Salary * 0.1 AS Tax
+FROM
+    Employee;
+
+
+2. Comparison Operators
+Comparison Operators are used to compare values in SQL queries. They return Boolean values (TRUE or FALSE) based on the comparison.
+
+Operator	Symbol	Example	Result
+Equal to	=	SELECT 10 = 5	FALSE
+Not equal	<> or !=	SELECT 10 <> 5	TRUE
+Greater than	>	SELECT 10 > 5	TRUE
+Less than	<	SELECT 10 < 5	FALSE
+Greater than or equal	>=	SELECT 10 >= 10	TRUE
+Less than or equal	<=	SELECT 10 <= 10	TRUE
+Example SQL Code
+SELECT
+    Employee_ID,
+    Name,
+    Salary
+FROM
+    Employee
+WHERE
+    Salary > 50000;
+
+
+3. Logical Operators
+Logical Operators are used to combine multiple conditions in SQL queries. These operators include AND, OR, and NOT.
+
+Operator	Symbol	Example	Description
+AND	AND	SELECT * FROM Employee WHERE Salary > 50000 AND Department = 'HR'	Returns rows where both conditions are true
+OR	OR	SELECT * FROM Employee WHERE Salary > 50000 OR Department = 'HR'	Returns rows where at least one condition is true
+NOT	NOT	SELECT * FROM Employee WHERE NOT Department = 'HR'	Returns rows where the condition is false
+Example SQL Code
+SELECT
+    Employee_ID,
+    Name,
+    Salary,
+    Department
+FROM
+    Employee
+WHERE
+    Salary > 50000 AND Department = 'HR';
+
+
+4. Bitwise Operators
+Bitwise Operators perform bit-level operations on integer data. These operators are not as commonly used but are useful in certain situations, such as encoding or decoding data.
+
+Operator	Symbol	Example	Result (in bits)
+AND	&	SELECT 5 & 3	1 (0101 & 0011 = 0001)
+OR	|	SELECT 5 | 3	7 (0101 | 0011 = 0111)
+XOR	^	SELECT 5 ^ 3	6 (0101 ^ 0011 = 0110)
+NOT	~	SELECT ~5	-6 (Bitwise NOT of 5)
+Example SQL Code
+SELECT
+    5 & 3 AS Bitwise_AND,
+    5 | 3 AS Bitwise_OR,
+    5 ^ 3 AS Bitwise_XOR,
+    ~5 AS Bitwise_NOT;
+
+
+5. Set Operators
+Set Operators are used to combine results from multiple SELECT queries. These operators include UNION, UNION ALL, INTERSECT, and EXCEPT.
+
+Operator	Description
+UNION	Combines results of two queries and removes duplicates
+UNION ALL	Combines results of two queries without removing duplicates
+INTERSECT	Returns common records between two queries
+EXCEPT	Returns records from the first query that are not in the second query
+Example SQL Code
+SELECT Name FROM Employee
+UNION
+SELECT Name FROM Customer;
+
+SELECT Name FROM Employee
+INTERSECT
+SELECT Name FROM Customer;
+
+Summary Table of SQL Operators
+Operator Type	Examples of Usage	Description
+Arithmetic	+, -, *, /, %	Performs mathematical operations on numeric data
+Comparison	=, <>, >, <, >=, <=	Compares two values and returns Boolean result
+Logical	AND, OR, NOT	Combines multiple conditions in a query
+Bitwise	&, |, ^, ~	Performs bit-level operations
+Set	UNION, UNION ALL, INTERSECT, EXCEPT	Combines results from multiple SELECT statements
+
+Example: Sales Database Structure
+Sales Table
+Sale_ID	Customer_ID	Product_ID	Quantity	Unit_Price
+1	101	201	3	100
+2	102	202	5	200
+3	103	201	2	100
+4	104	203	1	300
+Product Table
+Product_ID	Product_Name	Category
+201	Laptop	Electronics
+202	Chair	Furniture
+203	Desk	Furniture
+Customer Table
+Customer_ID	Customer_Name	City
+101	Alice	New York
+102	Bob	Los Angeles
+103	Charlie	Chicago
+104	Dave	New York
+Example Queries
+1. Using Arithmetic Operators to Calculate Total Sale Amount
+Calculate the total sale amount (quantity * unit price) for each sale.
+
+SELECT
+    Sale_ID,
+    Product_ID,
+    Quantity,
+    Unit_Price,
+    Quantity * Unit_Price AS Total_Amount
+FROM
+    Sales;
+Result:
+Sale_ID	Product_ID	Quantity	Unit_Price	Total_Amount
+1	201	3	100	300
+2	202	5	200	1000
+3	201	2	100	200
+4	203	1	300	300
+2. Using Comparison Operators to Filter Sales with High Quantities
+Retrieve all sales where the quantity is greater than 3.
+
+SELECT
+    Sale_ID,
+    Product_ID,
+    Quantity,
+    Unit_Price
+FROM
+    Sales
+WHERE
+    Quantity > 3;
+Result:
+Sale_ID	Product_ID	Quantity	Unit_Price
+2	202	5	200
+3. Using Logical Operators to Combine Conditions
+Retrieve sales where the quantity is greater than 2 and the unit price is above 150.
+
+SELECT
+    Sale_ID,
+    Product_ID,
+    Quantity,
+    Unit_Price
+FROM
+    Sales
+WHERE
+    Quantity > 2 AND Unit_Price > 150;
+Result:
+Sale_ID	Product_ID	Quantity	Unit_Price
+2	202	5	200
+4. Using Bitwise Operators to Perform Bit-Level Operations
+Let’s check a bitwise AND operation on some numeric values (this example assumes specific values are already known).
+
+SELECT
+    5 & 3 AS Bitwise_AND,
+    5 | 3 AS Bitwise_OR,
+    5 ^ 3 AS Bitwise_XOR,
+    ~5 AS Bitwise_NOT;
+Result:
+Bitwise_AND	Bitwise_OR	Bitwise_XOR	Bitwise_NOT
+1	7	6	-6
+5. Using Set Operators to Combine Queries
+Find customers who bought either a Laptop or a Chair, using UNION.
+
+SELECT Customer_Name
+FROM Customer
+WHERE Customer_ID IN (SELECT Customer_ID FROM Sales WHERE Product_ID = 201)  -- Customers who bought Laptop
+
+UNION
+
+SELECT Customer_Name
+FROM Customer
+WHERE Customer_ID IN (SELECT Customer_ID FROM Sales WHERE Product_ID = 202);  -- Customers who bought Chair
+Result:
+Customer_Name
+Alice
+Bob
+Charlie
