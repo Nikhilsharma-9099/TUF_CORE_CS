@@ -1,0 +1,101 @@
+Clauses in SQL are used to refine and control the results of queries, allowing users to filter, group, and organize data in various ways. Each clause has a specific purpose, and multiple clauses are often combined to get desired results.
+
+Key SQL Clauses
+DISTINCT Clause – Removes duplicate records.
+WHERE Clause – Filters data based on conditions.
+ORDER BY Clause – Sorts the data in a specified order.
+GROUP BY Clause – Groups data based on one or more columns.
+HAVING Clause – Filters grouped data.
+
+1. DISTINCT Clause
+The DISTINCT clause is used to eliminate duplicate values from the result set. It’s typically used when querying columns with repeated data and ensures that each unique value appears only once.
+
+Syntax:
+SELECT DISTINCT column_name FROM table_name;
+Example
+Consider a Customer table:
+
+Customer_ID	City
+1	New York
+2	Los Angeles
+3	New York
+4	Chicago
+To get a list of unique cities:
+
+SELECT DISTINCT City FROM Customer;
+Result:
+City
+New York
+Los Angeles
+Chicago
+
+2. WHERE Clause
+The WHERE clause filters records based on specified conditions. It’s used to retrieve only those rows that meet a particular condition, reducing the data returned by the query.
+
+Syntax:
+SELECT column_name FROM table_name WHERE condition;
+Example
+Consider an Employee table:
+
+Employee_ID	Name	Department	Salary
+1	Alice	HR	60000
+2	Bob	IT	80000
+3	Charlie	HR	55000
+4	Dave	IT	90000
+To find employees in the HR department:
+
+SELECT * FROM Employee WHERE Department = 'HR';
+Result:
+Employee_ID	Name	Department	Salary
+1	Alice	HR	60000
+3	Charlie	HR	55000
+3. ORDER BY Clause
+The ORDER BY clause sorts the result set in ascending or descending order based on one or more columns. By default, it sorts in ascending order unless specified otherwise.
+
+Syntax:
+SELECT column_name FROM table_name ORDER BY column_name [ASC|DESC];
+Example
+To get a list of employees sorted by salary in descending order:
+
+SELECT Name, Salary FROM Employee ORDER BY Salary DESC;
+Result:
+Name	Salary
+Dave	90000
+Bob	80000
+Alice	60000
+Charlie	55000
+4. GROUP BY Clause
+The GROUP BY clause groups records based on one or more columns and is often used with aggregate functions like COUNT, SUM, AVG, etc. It groups data into subsets, allowing us to calculate summaries for each group.
+
+Syntax:
+SELECT column_name, AGGREGATE_FUNCTION(column_name) FROM table_name GROUP BY column_name;
+Example
+Using the Employee table to find the total salary by department:
+
+SELECT Department, SUM(Salary) AS Total_Salary FROM Employee GROUP BY Department;
+Result:
+Department	Total_Salary
+HR	115000
+IT	170000
+5. HAVING Clause
+The HAVING clause is used to filter records after they’ve been grouped by the GROUP BY clause. It’s similar to the WHERE clause but applies to groups rather than individual rows.
+
+Syntax:
+SELECT column_name, AGGREGATE_FUNCTION(column_name) FROM table_name GROUP BY column_name HAVING condition;
+Example
+To get departments with a total salary greater than 120,000:
+
+SELECT Department, SUM(Salary) AS Total_Salary
+FROM Employee
+GROUP BY Department
+HAVING SUM(Salary) > 120000;
+Result:
+Department	Total_Salary
+IT	170000
+Summary Table of SQL Clauses
+Clause	Purpose	Example	Result Description
+DISTINCT	Removes duplicate rows	SELECT DISTINCT City FROM Customer	Unique cities in the Customer table
+WHERE	Filters records based on conditions	SELECT * FROM Employee WHERE Department='HR'	Employees in HR department
+ORDER BY	Sorts the result set	SELECT * FROM Employee ORDER BY Salary DESC	Employees ordered by salary (descending)
+GROUP BY	Groups rows based on column(s)	SELECT Department, SUM(Salary) GROUP BY Department	Total salary by department
+HAVING	Filters groups based on conditions	SELECT Department, SUM(Salary) HAVING SUM(Salary) > 120000	Departments with total salary > 120,000
